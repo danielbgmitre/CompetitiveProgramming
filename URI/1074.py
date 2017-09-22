@@ -6,7 +6,7 @@ for i in xrange(int(raw_input())):
     if n == 0:
         print "NULL"
         continue
-    
+
     if n%2:
         if (n>0):
             print "ODD POSITIVE"
@@ -17,4 +17,3 @@ for i in xrange(int(raw_input())):
             print "EVEN POSITIVE"
         else:
             print "EVEN NEGATIVE"
-
