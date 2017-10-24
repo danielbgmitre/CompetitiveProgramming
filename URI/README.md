@@ -2,13 +2,13 @@
 
 ## Index pela questão
 
-+ [1028](/Matemática/1028.cpp) - [Mínimo Divisor Comum (MDC)][GCD]
-+ [1135](/Grafos/1135.cpp) - [Menor Ancestral Comum (LCA)][LCA]
-+ [1163](/Matemática/1163.cpp) - [Lançamento Oblíquo][video lancamento obliquo]
-+ [1221](/Matemática/1221.cpp) - [Crivo de Eratóstenes][crivo]
-+ [1224](/Paradigmas/1224.cpp) - [Programação Dinâmica][DP]
-+ [1264](/Matemática/1264.cpp) - [Divisibilidade por 9][div9] | [Aritmética Modular][aritmetica modular]
-+ [1582](/Matemática/1582.cpp) - [Mínimo Divisor Comum(MDC)][GCD]
++ [1028](Matemática/1028.cpp) - [Mínimo Divisor Comum (MDC)][GCD]
++ [1135](Grafos/1135.cpp) - [Menor Ancestral Comum (LCA)][LCA]
++ [1163](Matemática/1163.cpp) - [Lançamento Oblíquo][video lancamento obliquo]
++ [1221](Matemática/1221.cpp) - [Crivo de Eratóstenes][crivo]
++ [1224](Paradigmas/1224.cpp) - [Programação Dinâmica][DP]
++ [1264](Matemática/1264.cpp) - [Divisibilidade por 9][div9] | [Aritmética Modular][aritmetica modular]
++ [1582](Matemática/1582.cpp) - [Mínimo Divisor Comum(MDC)][GCD]
 
 ## Index pelo tema
 + TO-DO
