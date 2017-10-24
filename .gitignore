@@ -1,3 +1,6 @@
 *.o
+*-in[0-9]*.txt
+out
 *.out
+out.txt
 *.exe
