@@ -6,13 +6,15 @@
 
 
 ## Edições Passadas
-+ [IV](https://a2oj.com/standings?ID=34093) - Vencedor: [Doritos Voador][doritos]
 
 | Edição |  Data  | Participantes                           | Vencedor                   | Questões |
 |:------:|:------:| :--------------------------------------:|:--------------------------:|:--------:|
 |[IV][IV]| 21/10  | 9<span style="color:red">(-1)</span>    |[Doritos Voador][doritos]   |[IV](IV/) |
+|[V][V]  | 26/10  | 9<span style="color:red">(-1)</span>    |[emersonlucena][emerson]    |[V](V/)   |
 
 
 
 [IV]: https://a2oj.com/standings?ID=34093
+[V]: https://a2oj.com/standings?ID=34215
 [doritos]: https://a2oj.com/profile?Username=Doritos+Voador
+[emerson]: https://a2oj.com/profile?Username=emersonlucena

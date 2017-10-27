@@ -1,0 +1,1 @@
+cout regex: cout [<\"\sA-Z.a-z():\[\]]*;
