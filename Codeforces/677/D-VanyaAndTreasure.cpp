@@ -1,5 +1,5 @@
 //http://codeforces.com/problemset/problem/677/D
-//Vanya .y Treasure
+//Vanya and Treasure
 
 #include <bits/stdc++.h>
 
@@ -12,7 +12,6 @@ const int INF  = 999999999;
 #define y second
 
 typedef pair<int, int> ii;
-typedef pair<int, pair<int, int>> iii;
 
 int grid[MAXN][MAXN], dp[MAXN][MAXN];
 vector<ii> atalhos[MAXN*MAXN];

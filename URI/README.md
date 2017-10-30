@@ -7,7 +7,7 @@
 + [1163](Matemática/1163.cpp) - [Lançamento Oblíquo][video lancamento obliquo]
 + [1221](Matemática/1221.cpp) - [Crivo de Eratóstenes][crivo]
 + [1224](Paradigmas/1224.cpp) - [Programação Dinâmica][DP]
-+ [1259](Bibliotecas/1259.py) - Ordenação
++ [1259](Estruturas/1259.py) - Ordenação
 + [1264](Matemática/1264.cpp) - [Divisibilidade por 9][div9] | [Aritmética Modular][aritmetica modular]
 + [1580](Matemática/1580.py) - [Análise Combinatória][anagrama]
 + [1582](Matemática/1582.cpp) - [Mínimo Divisor Comum(MDC)][GCD]
