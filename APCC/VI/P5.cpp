@@ -1,62 +1,83 @@
-//http://acm.timus.ru/problem.aspx?space=1&num=1930
-//Ivan's Car
+/*
+ * Matheus Oliveira
+ * 29/10/2017
+ * 1930.cpp
+*/
 
-#### WA
-##TO-DO
-# Corrigir mudanca de marcha
+/* Breve comentário sobre o problema e sua solução:
+ * P5 (Ivan's Car):
+ * Basicamente, a ideia do problema era modificar o algoritmo de Dijkstra de maneira
+ * a encontrar o melhor caminho nessa dada situação. A diferença aqui é que, ao invés de custos
+ * por arestas, de uma cidade a outra, só devemos verificar quantas vezes Ivan mudou a marcha do carro.
+ * É dito no problema que o carro tem 2 marchas, uma para descer ladeiras e outra para subir.
+ * Assim, devemos modificar o dijkstra de maneira a somar 1 ao peso sempre que estamos mudando de uma marcha
+ * para outra durante o percurso, e no fim, bastava exibir a distância do ponto inicial ao final.
+ * A complexidade dela ficaria a de um Dijkstra otimizado, O(E * log(V)).
+*/
 
 #include <bits/stdc++.h>
-
 using namespace std;
 
-const int MAXN = 1e4 + 10;
+#define MAXN 10010
+#define INF 1e9
 
-int changes[MAXN][MAXN];
-vector<int> viz[MAXN];
+typedef pair<int, int> P;
 
-int bfs(int from, int goal, int N){
-    bool visited[N] = {false};
+int distancias[MAXN], visited[MAXN];
+vector< P > graph[MAXN];
 
-    queue<pair<int, int>> fila;
-    fila.push({0, from});
-    visited[from] = true;
+int main() {
 
-    while (!fila.empty()){
-        int dist = fila.front().first;
-        int no = fila.front().second;
+	int nodes, arestas, i, c1, c2, ini, fim, atual, aux, somar;
+	scanf("%d %d", &nodes, &arestas);
 
-        if (no == goal) return dist;
+	for(i=1; i <= nodes; i++) distancias[i] = INF;
 
-        for (int adj : viz[no]){
-            if (!visited[adj]){
-                fila.push({dist+changes[no][adj], adj});
-                visited[adj] = true;
-            }
-        }
-        fila.pop();
-    }
-    return -1;
-}
+	for(i=0; i < arestas; i++) {
+		scanf("%d %d", &c1, &c2);
 
-int main(){
-    int N, M;
-    scanf(" %d %d", &N, &M);
+		graph[c1].push_back( make_pair(1, c2) );
+		graph[c2].push_back( make_pair(0, c1) );
+	}
 
-    int a, b;
-    for (int i=0; i<M; i++){
-        scanf(" %d %d", &a, &b);
-        viz[a].push_back(b);
-        viz[b].push_back(a);
-        changes[a][b] = 1;
-        changes[b][a] = 0;
-    }
+	scanf("%d %d", &ini, &fim);
 
-    scanf(" %d %d", &a, &b);
-    if (a == b){
-        cout << 0 <<endl;
-    } else {
-        cout << bfs(a, b, N) << endl;
-    }
+	priority_queue< pair<P, int>, vector< pair<P, int> >, greater< pair<P, int> > > djikstra;
+	djikstra.push( make_pair( make_pair(0, ini), -1 ) );
 
-    return 0;
+	distancias[ini] = 0;
+
+	while(not djikstra.empty()) {
+		pair<P, int> atual = djikstra.top();
+		djikstra.pop();
+
+		int node = atual.first.second, dist = atual.first.first, neighbors = graph[node].size();
+		int sentido = atual.second;
+
+		// subindo = 1, desc = 0
+
+		if(visited[node] == 1) continue;
+		visited[node] = 1;
+
+		for(i=0; i < neighbors; i++) {
+			int neighbor = graph[node][i].second, dir = graph[node][i].first;
+
+			if(sentido == -1) sentido = dir;
+
+			if(visited[neighbor] == 0) {
+
+				if(dir == sentido) somar = 0;
+				else somar = 1;
+
+				if(distancias[neighbor] > somar + dist) {
+					distancias[neighbor] = somar + dist;
+					djikstra.push( make_pair( make_pair(distancias[neighbor], neighbor), dir ) );
+				}
+			}
+		}
+	}
+
+	printf("%d\n", distancias[fim]);
+
+	return 0;
 }
