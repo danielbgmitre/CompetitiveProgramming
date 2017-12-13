@@ -1,6 +1,9 @@
 *.o
 *-in[0-9]*.txt
+in[0-9]*.txt
+in.txt
 out
 *.out
 out.txt
 *.exe
+[\[]private[\]][0-9]*.*

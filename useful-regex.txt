@@ -1,1 +1,1 @@
-cout regex: cout [<\"\sA-Z.a-z():\[\]]*;
+cout regex: cout [\\0-9<\"\sA-Za-z\(\)\:\[\]\,\_\=\#\.\-\>\,\?\!]*;
