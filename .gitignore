@@ -3,7 +3,9 @@
 in[0-9]*.txt
 in.txt
 out
+*.in
 *.out
+*.sol
 out.txt
 *.exe
-[\[]private[\]][0-9]*.*
+.gdb_history
