@@ -6,12 +6,10 @@ resultados = [(-1, -1) for _ in range(50)]
 resultados[0] = (0, 1)
 resultados[1] = (1, 1)
 
-
 def fib(X):
     if (resultados[X] == (-1, -1)):
         resultados[X] = (fib(X-1)[0] + fib(X-2)[0], 1 + fib(X-1)[1] + fib(X-2)[1])
     return resultados[X]
-	
 
 N = int(raw_input())
 for _ in range(N):
