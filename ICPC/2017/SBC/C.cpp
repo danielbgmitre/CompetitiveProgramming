@@ -1,5 +1,6 @@
 //https://www.urionlinejudge.com.br/judge/pt/problems/view/2660
 //Cigarras Periódicas
+
 #include <bits/stdc++.h>
 
 using namespace std;

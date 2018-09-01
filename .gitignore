@@ -6,6 +6,6 @@ out
 *.in
 *.out
 *.sol
-out.txt
 *.exe
 .gdb_history
+peda-session-a.out.txt
