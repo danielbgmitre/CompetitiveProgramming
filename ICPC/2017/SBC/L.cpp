@@ -7,68 +7,79 @@
 
 using namespace std;
 
-const int MAXN = 4194304;
+const int MAXN = 8388608;//4194304;
+const int MAXPOW = 24;
 const double PI = acos(-1);
+const double TWOPI = 2*PI;
 
-struct cd {
-  double real, image;
-  cd(double _real, double _image) {
-    real = _real;
-    image = _image;
-  }
-  cd() : real(0), image(0) {}
-  cd(int x, int i) : real(x), image(i) {}
+struct cpx {
+  double r, i;
+  cd(double r, double i) : r(r), i(i) {}
+  cd() : r(0), i(0) {}
+  cd(int x, int i) : r(x), i(i) {}
 };
 
-cd operator + (const cd &c1, const cd &c2) {
-  return cd(c1.real + c2.real, c1.image + c2.image);
-}
-
-cd operator - (const cd &c1, const cd &c2) {
-  return cd(c1.real - c2.real, c1.image - c2.image);
-}
-
-cd operator * (const cd &c1, const cd &c2) {
-  return cd(c1.real*c2.real - c1.image*c2.image, c1.real*c2.image + c1.image*c2.real);
-}
+int pow_2[MAXPOW];
+int pow_4[MAXPOW];
 
 vector<int> result;
 vector<int> pr_sum;
-vector<cd> a, b;
+cpx* a,* b;
 
-void fft(vector<cd>& a, bool invert) {
-    int n = a.size();
+void twiddle(cpx &W, double N, double v){
+    W.r = cos(v * TWOPI / N);
+    W.i = -sin(v * TWOPI / N);
+}
 
-    for (int i=1, j=0; i < n; i++) {
-        int bit = n >> 1;
-        for (; j & bit; bit >>= 1) {
-            j ^= bit;
+void radix4_reorder(cpx W[], int N) {
+    int bits=23;
+    double tempr, tempi;
+
+    for (int i=0; i<N; i++) {
+        int j=0;
+        for (int k=0; k<bits; k+=2) {
+            if (i&pow_2[k])   j += pow_2[bits-k-2];
+            if (i&pow_2[k+1]) j+= pow_2[bits-k-1];
         }
-        j ^= bit;
-
-        if (i < j) swap(a[i], a[j]);
-    }
-
-    for (int len = 2; len <= n; len <<= 1) {
-        double ang = 2 * PI / len * (invert? -1 : 1);
-        cd wlen(cos(ang), sin(ang));
-        for (int i = 0; i < n; i += len) {
-            cd w(1, 0);
-            for (int j = 0; j < len / 2; j++) {
-                int left = i+j;
-                int right = i+j+len/2;
-                cd u = a[left], v = a[right] * w;
-                a[left] = u + v;
-                a[right] = u - v;
-                w = w * wlen;
-            }
+        if (j > i){
+            tempr = W[i].r, tempi = W[i].i;
+            W[i].r = W[j].r, W[i].i = W[j].i;
+            W[j].r = tempr, W[j].i = tempi;
         }
     }
+}
 
-    if (invert) {
-        for (cd& x : a) {
-            x.real /= n;
-            x.image /= n;
+//radix4 fft
+void fft(cpx x[], int N) {
+    int N1 = 4;
+    int N2 = N/4;
+
+    for (int n2=0; n2<N2; n2++) {
+	/** Don't hurt the butterfly */
+    	bfly[0].r = (x[n2].r + x[N2 + n2].r + x[2*N2+n2].r + x[3*N2+n2].r);
+    	bfly[0].i = (x[n2].i + x[N2 + n2].i + x[2*N2+n2].i + x[3*N2+n2].i);
+
+    	bfly[1].r = (x[n2].r + x[N2 + n2].i - x[2*N2+n2].r - x[3*N2+n2].i);
+    	bfly[1].i = (x[n2].i - x[N2 + n2].r - x[2*N2+n2].i + x[3*N2+n2].r);
+
+    	bfly[2].r = (x[n2].r - x[N2 + n2].r + x[2*N2+n2].r - x[3*N2+n2].r);
+    	bfly[2].i = (x[n2].i - x[N2 + n2].i + x[2*N2+n2].i - x[3*N2+n2].i);
+
+    	bfly[3].r = (x[n2].r - x[N2 + n2].i - x[2*N2+n2].r + x[3*N2+n2].i);
+    	bfly[3].i = (x[n2].i + x[N2 + n2].r - x[2*N2+n2].i - x[3*N2+n2].r);
+
+
+    	/** In-place results */
+    	for (int k1=0; k1<N1; k1++) {
+    	    twiddle(W, N, (double)k1*(double)n2);
+    	    x[n2 + N2*k1].r = bfly[k1].r*W.r - bfly[k1].i*W.i;
+    	    x[n2 + N2*k1].i = bfly[k1].i*W.r + bfly[k1].r*W.i;
+    	}
+    }
+
+    if (N2 != 1) {
+        for (int k1=0; k1 < N1; k1++) {
+            radix4(&x[N2*k1], N2);
         }
     }
 }
@@ -81,31 +92,11 @@ void showVec(vector<int> const& v, string name) {
     cout << "] "<< endl;
 }
 
-void multiply(vector<cd>& fa, vector<cd>& fb) {
-    int n = 1;
-    while (n < fa.size() + fb.size()) {
-        n <<= 1;
-    }
-    result.resize(n);
-
-    fa.resize(n);
-    fb.resize(n);
-
-    fft(fa, false);
-    fft(fb, false);
-
-    for (int i=0; i<n; i++) {
-        fa[i] = fa[i] * fb[i];
-    }
-    fft(fa, true);
-
-    for (int i=0; i<n; i++) {
-        result[i] = (fa[i].real > .4);
-    }
-}
 
 int main() {
     pr_sum.resize(MAXN);
+    a = new cpx[MAXN];
+    b = new cpx[MAXN];
     pr_sum[0] = 0;
     int n = 1;
 
@@ -121,8 +112,8 @@ int main() {
     a.resize(total+1), b.resize(total+1);
 
     for (int i=0; i<n; i++) {
-        a[pr_sum[i]].real = 1;
-        b[total - pr_sum[i]].real = 1;
+        a[pr_sum[i]].r = 1;
+        b[total - pr_sum[i]].r = 1;
     }
 
     multiply(a, b);
