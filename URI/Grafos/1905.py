@@ -10,23 +10,22 @@ def reachable(matrix, curr: tuple, end: tuple) -> bool:
     if curr == end:  # condicao de parada
         return True
 
-    prev = matrix[x][y]
     matrix[x][y] = True
 
     res = False
     for dX, dY in [(0, 1), (1, 0), (0, -1), (-1, 0)]:
         res = res or reachable(matrix, (x + dX, y + dY), end)
 
-    matrix[x][y] = prev
     return res
 
 
 T = int(input())
+
 for _ in range(T):
     matrix = []
     while len(matrix) < 5:
         line = list(map(int, input().split()))
-        if len(line) > 0:  # uri testcases are "dirty" with some empty lines
+        if len(line) > 0:    # tem linhas vazias na entrada do uri
             matrix.append(line)
 
     if reachable(matrix, (0, 0), (4, 4)):
