@@ -1,24 +1,23 @@
 # -*- coding: utf-8 -*-
 
-def backtrack(numbers: list, bit: int, k: int, remaining: list):
-    if len(remaining) < k:
-        return -1
+def backtrack(numbers: list, idx: int, best: int, curr: int, remaining: int) -> int:
+    if idx == len(numbers):
+        if remaining > 0:
+            return float('-inf')
+        return curr
 
-    if (bit < 0):
-        res = -1
-        for n in remaining:
-            res &= n
-        return res
+    if (curr > -1) and (curr <= best):
+        print("%d <= %d" % (curr, best))
+        return curr
 
-    next_remaining = list(filter(lambda n: (1 << bit) & n, remaining))
+    if remaining > 0:
+        best = max(best, backtrack(numbers, idx + 1, best,
+                                   curr & numbers[idx], remaining - 1))
 
-    if (res := backtrack(numbers, bit - 1, k, next_remaining)) >= 0:
-        return res
-
-    return backtrack(numbers, bit - 1, k, remaining)
+    return max(best, backtrack(numbers, idx + 1, best, curr, remaining))
 
 
 for _ in range(int(input())):
-    N, K = map(int, input().split())
+    _, K = map(int, input().split())
     numbers = list(map(int, input().split()))
-    print(backtrack(numbers, 31, K, numbers))
+    print(backtrack(numbers, 0, -1, -1, K))
