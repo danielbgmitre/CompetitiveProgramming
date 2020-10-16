@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 def backtrack(numbers: list, bit: int, k: int, remaining: list):
+    if len(remaining) < k:
+        return -1
+
     if (bit < 0):
         res = -1
         for n in remaining:
@@ -9,8 +12,8 @@ def backtrack(numbers: list, bit: int, k: int, remaining: list):
 
     next_remaining = list(filter(lambda n: (1 << bit) & n, remaining))
 
-    if len(next_remaining) >= k:
-        return backtrack(numbers, bit - 1, k, next_remaining)
+    if (res := backtrack(numbers, bit - 1, k, next_remaining)) >= 0:
+        return res
 
     return backtrack(numbers, bit - 1, k, remaining)
 
