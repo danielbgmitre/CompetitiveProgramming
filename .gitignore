@@ -9,3 +9,4 @@ out
 *.exe
 .gdb_history
 peda-session-a.out.txt
+/venv/
